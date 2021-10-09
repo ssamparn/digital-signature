@@ -21,6 +21,7 @@
     <module>create-signature</module>
     <module>verify-signature</module>
     <module>asymmetric-crypto-digi-sign</module>
+    <module>bouncy-castle-signing</module>
   </modules>
 
 </project>

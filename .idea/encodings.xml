@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/asymmetric-crypto-digi-sign/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/asymmetric-crypto-digi-sign/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bouncy-castle-signing/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/create-signature/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/create-signature/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/verify-signature/src/main/java" charset="UTF-8" />
