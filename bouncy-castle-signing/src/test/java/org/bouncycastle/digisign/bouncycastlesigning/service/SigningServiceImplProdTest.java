@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SigningServiceImplProdTest {
 
   @Autowired
-  private SigningServiceImpl bouncyCastleUtil;
+  private SigningServiceImpl signingService;
 
   @Autowired
   private DigiSignConfig signConfig;
@@ -37,18 +37,18 @@ public class SigningServiceImplProdTest {
     System.out.println("Original Message : " + secretMessage);
 
     byte[] messageToEncrypt = secretMessage.getBytes();
-    byte[] encryptedData = bouncyCastleUtil.encryptData(messageToEncrypt, certificate);
+    byte[] encryptedData = signingService.encryptData(messageToEncrypt, certificate);
     String encryptedMessage = new String(encryptedData);
     System.out.println("Encrypted Message : " + encryptedMessage);
-    byte[] decryptedRawData = bouncyCastleUtil.decryptData(encryptedData, privateKey);
+    byte[] decryptedRawData = signingService.decryptData(encryptedData, privateKey);
     String decryptedMessage = new String(decryptedRawData);
 
     System.out.println("Decrypted Message : " + decryptedMessage);
     assertEquals(decryptedMessage, secretMessage);
 
-    byte[] signedData = bouncyCastleUtil.signData(secretMessage.getBytes(), certificate, privateKey);
+    byte[] signedData = signingService.signData(secretMessage.getBytes(), certificate, privateKey);
     System.out.println("Signed Message : " + new String(signedData));
-    boolean check = bouncyCastleUtil.verifySignedData(signedData);
+    boolean check = signingService.verifySignedData(signedData);
     assertTrue(check);
   }
 }
