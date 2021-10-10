@@ -7,5 +7,6 @@ digisign:
   privateKeyPassword: password
   alias: bouncy-castle-signing
   keyStoreType: PKCS12
+  provider: bouncy-castle
 
 

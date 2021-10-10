@@ -69,22 +69,6 @@ public class DigiSignConfig {
   }
 
   @Bean
-  public List<X509Certificate> loadCertificateChain(KeyStore keyStore) {
-    try {
-      Certificate[] certificates = keyStore.getCertificateChain(digiSignProperties.getAlias());
-
-      if (null == certificates) {
-        throw new RuntimeException("There is no X.509 certificate chain under alias " + digiSignProperties.getAlias());
-      }
-
-      return Stream.of(certificates).map(certificate -> (X509Certificate) certificate).collect(Collectors.toList());
-    } catch (KeyStoreException e) {
-      throw new RuntimeException("Failed to load certificate under alias " + digiSignProperties.getAlias(), e);
-    }
-
-  }
-
-  @Bean
   public X509Certificate loadCertificate(KeyStore keyStore) {
     try {
       Certificate certificate = keyStore.getCertificate(digiSignProperties.getAlias());
@@ -95,6 +79,21 @@ public class DigiSignConfig {
         return (X509Certificate) certificate;
       }
       throw new RuntimeException("Certificate under alias " + digiSignProperties.getAlias() + " is not an X.509 certificate, but: " + certificate);
+    } catch (KeyStoreException e) {
+      throw new RuntimeException("Failed to load certificate under alias " + digiSignProperties.getAlias(), e);
+    }
+  }
+
+  @Bean
+  public List<X509Certificate> loadCertificateChain(KeyStore keyStore) {
+    try {
+      Certificate[] certificates = keyStore.getCertificateChain(digiSignProperties.getAlias());
+
+      if (null == certificates) {
+        throw new RuntimeException("There is no X.509 certificate chain under alias " + digiSignProperties.getAlias());
+      }
+
+      return Stream.of(certificates).map(certificate -> (X509Certificate) certificate).collect(Collectors.toList());
     } catch (KeyStoreException e) {
       throw new RuntimeException("Failed to load certificate under alias " + digiSignProperties.getAlias(), e);
     }
