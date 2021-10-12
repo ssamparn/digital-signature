@@ -10,6 +10,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.bouncycastle.digisign.bouncycastlesigning.properties.DigiSignProperties;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -65,6 +67,25 @@ public class DigiSignConfig {
       throw new RuntimeException("Key stored under alias " + digiSignProperties.getAlias() + " is not a private key, but: " + key);
     } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
       throw new RuntimeException("Failed to load private key under alias " + digiSignProperties.getAlias(), e);
+    }
+  }
+
+  @Bean
+  public PublicKey loadPublicKey(KeyStore keyStore) {
+    try {
+      Certificate certificate = keyStore.getCertificate(digiSignProperties.getAlias());
+
+      if (null == certificate) {
+        throw new RuntimeException("There is no X.509 certificate under alias " + digiSignProperties.getAlias());
+      }
+
+      if (null != certificate.getPublicKey()) {
+        return certificate.getPublicKey();
+//      return Base64.encodeBase64String(certificate.getPublicKey().getEncoded()) if we want public key in a string format
+      }
+      throw new RuntimeException("Public key under alias " + digiSignProperties.getAlias() + " is not a public key");
+    } catch (KeyStoreException e) {
+      throw new RuntimeException("Failed to load public key under alias " + digiSignProperties.getAlias(), e);
     }
   }
 
