@@ -9,14 +9,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public class GenerateKeys {
+public class GenerateKeyPairs {
 
   private KeyPairGenerator keyPairGen;
   private KeyPair keyPair;
   private PrivateKey privateKey;
   private PublicKey publicKey;
 
-  public GenerateKeys(int keyLength) throws NoSuchAlgorithmException {
+  public GenerateKeyPairs(int keyLength) throws NoSuchAlgorithmException {
     this.keyPairGen = KeyPairGenerator.getInstance("RSA");
     this.keyPairGen.initialize(keyLength);
   }
@@ -46,12 +46,14 @@ public class GenerateKeys {
   }
 
   public static void main(String[] args) {
-    GenerateKeys generateKeys;
+    GenerateKeyPairs generateKeyPairs;
     try {
-      generateKeys = new GenerateKeys(1024);
-      generateKeys.createKeys();
-      generateKeys.writeToFile("asymmetric-crypto-digi-sign/src/main/resources/public-key.txt", generateKeys.getPublicKey().getEncoded());
-      generateKeys.writeToFile("asymmetric-crypto-digi-sign/src/main/resources/private-key.txt", generateKeys.getPrivateKey().getEncoded());
+      generateKeyPairs = new GenerateKeyPairs(2048);
+      generateKeyPairs.createKeys();
+      generateKeyPairs.writeToFile("asymmetric-crypto-digi-sign/src/main/resources/asymmetric/public-key.txt",
+          generateKeyPairs.getPublicKey().getEncoded());
+      generateKeyPairs.writeToFile("asymmetric-crypto-digi-sign/src/main/resources/asymmetric/private-key.txt",
+          generateKeyPairs.getPrivateKey().getEncoded());
     } catch (NoSuchAlgorithmException | IOException e) {
       System.err.println(e.getMessage());
     }

@@ -1,5 +1,6 @@
 HELP.md
 target/
+target/asymmetric-crypto-digi-sign-1.0.0.jar
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

@@ -86,9 +86,11 @@ public class AsymmetricCryptography {
   public static void main(String[] args) throws Exception {
     AsymmetricCryptography asymmetricCryptography = new AsymmetricCryptography();
 
-    PrivateKey privateKey = asymmetricCryptography.getPrivateKey("asymmetric-crypto-digi-sign/src/main/resources/private-key.txt");
-    PublicKey publicKey = asymmetricCryptography.getPublicKey("asymmetric-crypto-digi-sign/src/main/resources/public-key.txt");
+    PrivateKey privateKey = asymmetricCryptography.getPrivateKey("asymmetric-crypto-digi-sign/src/main/resources/asymmetric/private-key"
+        + ".txt");
+    PublicKey publicKey = asymmetricCryptography.getPublicKey("asymmetric-crypto-digi-sign/src/main/resources/asymmetric/public-key.txt");
 
+    // String Encryption and Decryption
     String message = "Cryptography is fun!";
     String encrypted_msg = asymmetricCryptography.encryptText(message, privateKey);
     String decrypted_msg = asymmetricCryptography.decryptText(encrypted_msg, publicKey);
@@ -97,6 +99,7 @@ public class AsymmetricCryptography {
         "\nEncrypted Message: " + encrypted_msg
         + "\nDecrypted Message: " + decrypted_msg);
 
+    // File Encryption and Decryption
     if (new File("asymmetric-crypto-digi-sign/src/main/resources/text.txt").exists()) {
       asymmetricCryptography.encryptFile(asymmetricCryptography.getFileInBytes(new File("asymmetric-crypto-digi-sign/src/main/resources/text.txt")),
           new File("asymmetric-crypto-digi-sign/src/main/resources/text_encrypted.txt"), privateKey);
