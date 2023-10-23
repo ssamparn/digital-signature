@@ -44,7 +44,7 @@ public class VerifyMessage {
 
   public static void main(String[] args) throws Exception{
     new VerifyMessage("asymmetric-crypto-digi-sign/src/main/resources/SignedData.txt",
-        "asymmetric-crypto-digi-sign/src/main/resources/public-key.txt");
+        "asymmetric-crypto-digi-sign/src/main/resources/asymmetric/public-key.txt");
   }
 
 }

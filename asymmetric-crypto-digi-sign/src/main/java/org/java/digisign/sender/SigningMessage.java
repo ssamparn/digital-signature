@@ -59,7 +59,8 @@ public class SigningMessage {
   public static void main(String[] args) throws Exception {
     String messageToBeSigned = JOptionPane.showInputDialog("Type your message here to sign");
 
-    new SigningMessage(messageToBeSigned, "asymmetric-crypto-digi-sign/src/main/resources/private-key.txt").writeToFile("asymmetric-crypto-digi-sign/src/main/resources/SignedData.txt");
+    new SigningMessage(messageToBeSigned, "asymmetric-crypto-digi-sign/src/main/resources/asymmetric/private-key.txt").writeToFile(
+        "asymmetric-crypto-digi-sign/src/main/resources/SignedData.txt");
   }
 
 }
