@@ -1,4 +1,4 @@
 org/java/digisign/asymmetric/AsymmetricCryptography.class
-org/java/digisign/keypair/GenerateKeys.class
+org/java/digisign/keypair/GenerateKeyPairs.class
 org/java/digisign/sender/SigningMessage.class
 org/java/digisign/receiver/VerifyMessage.class

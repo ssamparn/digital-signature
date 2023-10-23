@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 public class SigningServiceImplTest {
 
-  String certificatePath = "src/main/resources/bouncy-castle-signing.cer";
+  String certificatePath = "src/main/resources/message-signing-public-certificate.cer";
   String privateKeyPath = "src/main/resources/message-signing-keystore.jks";
   char[] p12Password = "password".toCharArray();
   char[] keyPassword = "password".toCharArray();
@@ -41,7 +41,7 @@ public class SigningServiceImplTest {
     X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new FileInputStream(certificatePath));
     KeyStore keystore = KeyStore.getInstance("PKCS12");
     keystore.load(new FileInputStream(privateKeyPath), p12Password);
-    PrivateKey privateKey = (PrivateKey) keystore.getKey("bouncy-castle-signing", keyPassword);
+    PrivateKey privateKey = (PrivateKey) keystore.getKey("message-signing", keyPassword);
 
     String secretMessage = "My password for bouncy castle signing is password";
     System.out.println("Original Message : " + secretMessage);

@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.bouncycastle.digisign.bouncycastlesigning.properties.DigiSignProperties;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -81,7 +80,7 @@ public class DigiSignConfig {
 
       if (null != certificate.getPublicKey()) {
         return certificate.getPublicKey();
-//      return Base64.encodeBase64String(certificate.getPublicKey().getEncoded()) if we want public key in a string format
+//      return Base64.encodeBase64String(certificate.getPublicKey().getEncoded()) if we want public key in a base64 encoded string format
       }
       throw new RuntimeException("Public key under alias " + digiSignProperties.getAlias() + " is not a public key");
     } catch (KeyStoreException e) {
