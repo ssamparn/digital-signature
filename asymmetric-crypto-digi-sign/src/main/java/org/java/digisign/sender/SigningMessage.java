@@ -20,7 +20,7 @@ public class SigningMessage {
 
     //The constructor of Message class builds the list that will be written to the file.
     //The list consists of the message and the signature.
-    public SigningMessage(String data, String keyFile) throws InvalidKeyException, Exception {
+    public SigningMessage(String data, String keyFile) throws Exception {
         list = new ArrayList<>();
         list.add(data.getBytes());
         list.add(sign(data, keyFile));

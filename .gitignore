@@ -35,3 +35,4 @@ build/
 /asymmetric-crypto-digi-sign/target/
 /create-signature/target/
 /verify-signature/target/
+/asymmetric-crypto-digi-sign/src/main/resources/SignedData.txt
