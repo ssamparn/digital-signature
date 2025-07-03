@@ -44,78 +44,78 @@ import org.springframework.stereotype.Component;
 @Component
 public class SigningServiceImpl implements SigningService {
 
-  @Override
-  public byte[] encryptData(final byte[] data, X509Certificate encryptionCertificate)
-      throws CertificateEncodingException, CMSException, IOException {
-    byte[] encryptedData = null;
+    @Override
+    public byte[] encryptData(final byte[] data, X509Certificate encryptionCertificate)
+            throws CertificateEncodingException, CMSException, IOException {
+        byte[] encryptedData = null;
 
-    if (null != data && null != encryptionCertificate) {
-      CMSEnvelopedDataGenerator cmsEnvelopedDataGenerator = new CMSEnvelopedDataGenerator();
-      JceKeyTransRecipientInfoGenerator jceKey = new JceKeyTransRecipientInfoGenerator(encryptionCertificate);
-      cmsEnvelopedDataGenerator.addRecipientInfoGenerator(jceKey);
-      CMSTypedData message = new CMSProcessableByteArray(data);
+        if (null != data && null != encryptionCertificate) {
+            CMSEnvelopedDataGenerator cmsEnvelopedDataGenerator = new CMSEnvelopedDataGenerator();
+            JceKeyTransRecipientInfoGenerator jceKey = new JceKeyTransRecipientInfoGenerator(encryptionCertificate);
+            cmsEnvelopedDataGenerator.addRecipientInfoGenerator(jceKey);
+            CMSTypedData message = new CMSProcessableByteArray(data);
 
-      OutputEncryptor encryptor = new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC)
-          .setProvider("BC")
-          .build();
-      CMSEnvelopedData cmsEnvelopedData = cmsEnvelopedDataGenerator.generate(message, encryptor);
+            OutputEncryptor encryptor = new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC)
+                    .setProvider("BC")
+                    .build();
+            CMSEnvelopedData cmsEnvelopedData = cmsEnvelopedDataGenerator.generate(message, encryptor);
 
-      encryptedData = cmsEnvelopedData.getEncoded();
+            encryptedData = cmsEnvelopedData.getEncoded();
+        }
+        return encryptedData;
     }
-    return encryptedData;
-  }
 
-  @Override
-  public byte[] decryptData(final byte[] encryptedData, final PrivateKey decryptionKey) throws CMSException {
-    byte[] decryptedData = null;
+    @Override
+    public byte[] decryptData(final byte[] encryptedData, final PrivateKey decryptionKey) throws CMSException {
+        byte[] decryptedData = null;
 
-    if (null != encryptedData && null != decryptionKey) {
-      CMSEnvelopedData envelopedData = new CMSEnvelopedData(encryptedData);
-      Collection<RecipientInformation> recipientInfoCollection = envelopedData.getRecipientInfos().getRecipients();
-      KeyTransRecipientInformation recipientInfo = (KeyTransRecipientInformation) recipientInfoCollection.iterator().next();
-      JceKeyTransRecipient recipient = new JceKeyTransEnvelopedRecipient(decryptionKey);
+        if (null != encryptedData && null != decryptionKey) {
+            CMSEnvelopedData envelopedData = new CMSEnvelopedData(encryptedData);
+            Collection<RecipientInformation> recipientInfoCollection = envelopedData.getRecipientInfos().getRecipients();
+            KeyTransRecipientInformation recipientInfo = (KeyTransRecipientInformation) recipientInfoCollection.iterator().next();
+            JceKeyTransRecipient recipient = new JceKeyTransEnvelopedRecipient(decryptionKey);
 
-      decryptedData = recipientInfo.getContent(recipient);
+            decryptedData = recipientInfo.getContent(recipient);
+        }
+        return decryptedData;
     }
-    return decryptedData;
-  }
 
-  @Override
-  public byte[] signData(byte[] data, final X509Certificate signingCertificate, final PrivateKey signingKey)
-      throws CertificateEncodingException, CMSException, IOException, OperatorCreationException {
-    byte[] signedMessage;
-    List<X509Certificate> certList = new ArrayList<>();
-    CMSTypedData cmsData = new CMSProcessableByteArray(data);
-    certList.add(signingCertificate);
-    Store certs = new JcaCertStore(certList);
-    CMSSignedDataGenerator cmsGenerator = new CMSSignedDataGenerator();
-    ContentSigner contentSigner = new JcaContentSignerBuilder("SHA256withRSA").build(signingKey);
-    cmsGenerator.addSignerInfoGenerator(new JcaSignerInfoGeneratorBuilder(new JcaDigestCalculatorProviderBuilder().setProvider("BC").build()).build(contentSigner, signingCertificate));
-    cmsGenerator.addCertificates(certs);
-    CMSSignedData cms = cmsGenerator.generate(cmsData, true);
-    signedMessage = cms.getEncoded();
-    return signedMessage;
-  }
-
-  @Override
-  public boolean verifySignedData(final byte[] signedData)
-      throws CMSException, IOException, OperatorCreationException, CertificateException {
-    ByteArrayInputStream bIn = new ByteArrayInputStream(signedData);
-    ASN1InputStream aIn = new ASN1InputStream(bIn);
-    CMSSignedData s = new CMSSignedData(ContentInfo.getInstance(aIn.readObject()));
-    aIn.close();
-    bIn.close();
-    Store certs = s.getCertificates();
-    SignerInformationStore signers = s.getSignerInfos();
-    Collection<SignerInformation> c = signers.getSigners();
-    SignerInformation signer = c.iterator().next();
-    Collection<X509CertificateHolder> certCollection = certs.getMatches(signer.getSID());
-    Iterator<X509CertificateHolder> certIt = certCollection.iterator();
-    X509CertificateHolder certHolder = certIt.next();
-    boolean verifyResult = signer.verify(new JcaSimpleSignerInfoVerifierBuilder().build(certHolder));
-    if (!verifyResult) {
-      return false;
+    @Override
+    public byte[] signData(byte[] data, final X509Certificate signingCertificate, final PrivateKey signingKey)
+            throws CertificateEncodingException, CMSException, IOException, OperatorCreationException {
+        byte[] signedMessage;
+        List<X509Certificate> certList = new ArrayList<>();
+        CMSTypedData cmsData = new CMSProcessableByteArray(data);
+        certList.add(signingCertificate);
+        JcaCertStore certs = new JcaCertStore(certList);
+        CMSSignedDataGenerator cmsGenerator = new CMSSignedDataGenerator();
+        ContentSigner contentSigner = new JcaContentSignerBuilder("SHA256withRSA").build(signingKey);
+        cmsGenerator.addSignerInfoGenerator(new JcaSignerInfoGeneratorBuilder(new JcaDigestCalculatorProviderBuilder().setProvider("BC").build()).build(contentSigner, signingCertificate));
+        cmsGenerator.addCertificates(certs);
+        CMSSignedData cms = cmsGenerator.generate(cmsData, true);
+        signedMessage = cms.getEncoded();
+        return signedMessage;
     }
-    return true;
-  }
+
+    @Override
+    public boolean verifySignedData(final byte[] signedData)
+            throws CMSException, IOException, OperatorCreationException, CertificateException {
+        ByteArrayInputStream bIn = new ByteArrayInputStream(signedData);
+        ASN1InputStream aIn = new ASN1InputStream(bIn);
+        CMSSignedData s = new CMSSignedData(ContentInfo.getInstance(aIn.readObject()));
+        aIn.close();
+        bIn.close();
+        Store<X509CertificateHolder> certs = s.getCertificates();
+        SignerInformationStore signers = s.getSignerInfos();
+        Collection<SignerInformation> c = signers.getSigners();
+        SignerInformation signer = c.iterator().next();
+        Collection<X509CertificateHolder> certCollection = certs.getMatches(signer.getSID());
+        Iterator<X509CertificateHolder> certIt = certCollection.iterator();
+        X509CertificateHolder certHolder = certIt.next();
+        boolean verifyResult = signer.verify(new JcaSimpleSignerInfoVerifierBuilder().build(certHolder));
+        if (!verifyResult) {
+            return false;
+        }
+        return true;
+    }
 }

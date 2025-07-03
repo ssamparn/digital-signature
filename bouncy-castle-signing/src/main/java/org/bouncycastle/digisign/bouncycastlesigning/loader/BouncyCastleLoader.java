@@ -10,8 +10,8 @@ import org.springframework.context.event.EventListener;
 @Configuration
 public class BouncyCastleLoader {
 
-  @EventListener
-  public void loadOnApplicationEvent(ContextRefreshedEvent event) {
-    Security.addProvider(new BouncyCastleProvider());
-  }
+    @EventListener
+    public void loadOnApplicationEvent(ContextRefreshedEvent event) {
+        Security.addProvider(new BouncyCastleProvider());
+    }
 }

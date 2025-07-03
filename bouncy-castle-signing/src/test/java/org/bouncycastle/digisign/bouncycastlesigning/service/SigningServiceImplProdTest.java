@@ -51,7 +51,7 @@ public class SigningServiceImplProdTest {
     String decryptedMessage = new String(decryptedRawData);
 
     System.out.println("Decrypted Message : " + decryptedMessage);
-    assertEquals(decryptedMessage, secretMessage);
+    assertEquals(secretMessage, decryptedMessage);
   }
 
   @Test

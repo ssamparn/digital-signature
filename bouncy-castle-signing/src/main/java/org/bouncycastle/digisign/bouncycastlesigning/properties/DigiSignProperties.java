@@ -10,13 +10,13 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "digisign")
 public class DigiSignProperties {
 
-  private String keyStore;
+    private String keyStore;
 
-  private String keyStorePassword;
+    private String keyStorePassword;
 
-  private String privateKeyPassword;
+    private String privateKeyPassword;
 
-  private String alias;
+    private String alias;
 
-  private String keyStoreType;
+    private String keyStoreType;
 }
