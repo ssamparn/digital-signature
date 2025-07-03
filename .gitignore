@@ -32,3 +32,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/asymmetric-crypto-digi-sign/target/
+/create-signature/target/
+/verify-signature/target/
