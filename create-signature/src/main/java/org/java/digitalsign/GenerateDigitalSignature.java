@@ -11,36 +11,36 @@ import java.security.Signature;
 
 public class GenerateDigitalSignature {
 
-  public static void main(String[] args) {
-    try {
-      KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("DSA", "SUN");
-      SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+    public static void main(String[] args) {
+        try {
+            KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("DSA", "SUN");
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 
-      keyPairGen.initialize(1024, random);
-      KeyPair keyPair = keyPairGen.generateKeyPair();
+            keyPairGen.initialize(1024, random);
+            KeyPair keyPair = keyPairGen.generateKeyPair();
 
-      // Get a PrivateKey from the generated key pair.
-      PrivateKey privateKey = keyPair.getPrivate();
+            // Get a PrivateKey from the generated key pair.
+            PrivateKey privateKey = keyPair.getPrivate();
 
-      // Get an instance of Signature object and initialize it.
-      Signature signature = Signature.getInstance("SHA1withDSA", "SUN");
-      signature.initSign(privateKey);
+            // Get an instance of Signature object and initialize it.
+            Signature signature = Signature.getInstance("SHA1withDSA", "SUN");
+            signature.initSign(privateKey);
 
-      // Supply the data to be signed to the Signature object
-      // using the update() method and generate the digital
-      // signature.
-      byte[] bytes = Files.readAllBytes(Paths.get(new File("create-signature/src/main/resources/file.txt").getAbsolutePath()));
-      signature.update(bytes);
-      byte[] digitalSignature = signature.sign();
+            // Supply the data to be signed to the Signature object
+            // using the update() method and generate the digital
+            // signature.
+            byte[] bytes = Files.readAllBytes(Paths.get(new File("create-signature/src/main/resources/file.txt").getAbsolutePath()));
+            signature.update(bytes);
+            byte[] digitalSignature = signature.sign();
 
-      // Save digital signature and the public key to a file.
-      Files.write(Paths.get(new File("create-signature/src/main/resources/signature.txt").getAbsolutePath()), digitalSignature);
-      Files.write(Paths.get(new File("create-signature/src/main/resources/public-key.txt").getAbsolutePath()),
-          keyPair.getPublic().getEncoded());
+            // Save digital signature and the public key to a file.
+            Files.write(Paths.get(new File("create-signature/src/main/resources/signature.txt").getAbsolutePath()), digitalSignature);
+            Files.write(Paths.get(new File("create-signature/src/main/resources/public-key.txt").getAbsolutePath()),
+                    keyPair.getPublic().getEncoded());
 
-    } catch (Exception e) {
-      e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-  }
 
 }
